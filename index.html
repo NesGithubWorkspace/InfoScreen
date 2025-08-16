@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Infoscreen • Day Schedule</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="page">
+    <header id="header">
+      <img id="brand" class="brand" alt="" />
+      <h1 id="dayTitle" class="title-text">Today's Schedule</h1>
+      <div class="sub" id="daySub"></div>
+    </header>
+
+    <section class="board" id="board">
+      <div class="grid" id="grid"></div>
+      <div class="labels" id="labels"></div>
+      <div class="events" id="events"></div>
+      <div class="legend" id="legend"></div>
+    </section>
+  </div>
+
+  <div style="position: fixed; top: 0%; right: 0%; width: 30dvw; height: 100dvh;">
+    <iframe id="iframe_VisBesked_1" src="https://nystedefterskole.skoleplan.dk/InfoPanel.aspx?type=vagter" style="width:100%;height:100%;border:0px;" frameborder="0"></iframe>
+  </div>
+
+  <!-- 🔧 LOOKUP TABLE: Update this JSON only -->
+  <script type="application/json" id="lookup" src="plans.json">{
+    "settings": { "startHour": 7, "endHour": 24, "title": "Nysted Efterskole • Dagsplan", "showNowLine": true, "timezone": "Europe/Copenhagen", "date": "today", "logoUrl": "img/NE_LOGO_HORISONTAL_HVID.png", "logoHeight": 72, "logoAlt": "Nysted Efterskole"},
+    "palette": { "Undervisning": "#3AA6FF", "Skal ting": "#FF5C8A", "Eksamen": "#8A6DF1", "Måltid": "#22A06B", "Værksted": "#FFA552", "Valgfag": "#FF7F6E"},
+    "events": [
+      { "title": "Morgenmad", "type": "Måltid", "room": "Spisesalen", "start": "07:40", "end": "08:10"},
+      { "title": "Frokost", "type": "Måltid", "room": "Spisesalen", "start": "12:15", "end": "12:45"},
+      { "title": "Aftensmad", "type": "Måltid", "room": "Spisesalen", "start": "17:30", "end": "18:00"},
+      { "title": "Aftenshygge", "type": "Måltid", "room": "Spisesalen", "start": "20:30", "end": "21:30"},
+
+      { "title": "Rengøring", "type": "Skal ting", "room": "Familieområdet", "start": "08:10", "end": "08:40", "days": ["Mon","Tue","Wed","Thu","Fri"]},
+      { "title": "Familietid", "type": "Skal ting", "room": "Familieområdet", "start": "16:15", "end": "17:00", "days": ["Mon","Tue","Wed"]},
+      { "title": "Weekendsmøde", "type": "Skal ting", "room": "Spisesalen", "start": "15:15", "end": "15:45", "days": ["Fri"]},
+      { "title": "ME & WE", "type": "Skal ting", "room": "Familieområdet", "start": "13:15", "end": "14:00", "days": ["Thu"]},
+      { "title": "Fællessamling", "type": "Skal ting", "room": "Spisesalen", "start": "14:15", "end": "15:00", "days": ["Thu"]},
+      { "title": "Sengetid", "type": "Skal ting", "room": "Familieområdet", "start": "22:15", "end": "23:59"},
+
+      { "title": "Undervisning", "type": "Undervisning", "start": "09:00", "end": "12:00", "days": ["Mon","Tue","Wed","Thu","Fri"]},
+      { "title": "Værksted", "type": "Værksted","start": "09:00", "end": "12:00", "days": ["Mon","Tue","Wed","Thu","Fri"]},
+
+      { "title": "Undervisning", "type": "Undervisning", "start": "13:00", "end": "16:00", "days": ["Tue","Wed"]},
+      { "title": "Værksted", "type": "Værksted","start": "13:00", "end": "16:00", "days": ["Tue","Wed"]},
+
+      { "title": "Undervisning", "type": "Undervisning","start": "13:00", "end": "14:30", "days": ["Fri"] },
+      { "title": "Værksted", "type": "Værksted","start": "13:00", "end": "14:30", "days": ["Fri"] },
+      { "title": "Valgfag", "type": "Valgfag","start": "13:00", "end": "14:30", "days": ["Mon"] },
+      
+      { "title": "Weekend Spas", "type": "Skal ting", "start": "09:30", "end": "12:00", "days": ["Sat","Sun"] },
+      { "title": "Weekend Spas", "type": "Skal ting", "start": "13:00", "end": "17:00", "days": ["Sat","Sun"] }
+    ]
+  }</script>
+
+  <script src="JS/skema.js"></script>
+  <script src="JS/autoscroll.js"></script>
+  <script src="JS/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nyhedshjul</title>
+  <style>
+    :root{
+      --bg:#101834; --card:#1b2246; --accent:#f8df98; --accent2:#216a61; --warn:#d45c4e;
+      --text:#eef1ff; --muted:#a9b0d6;
+    }
+    body{margin:0;background:var(--bg);color:var(--text);font:16px/1.4 system-ui,Segoe UI,Roboto,Arial}
+    .wheel{
+      max-width: 980px; margin: 24px auto; padding: 12px 16px;
+      background:linear-gradient(180deg, rgba(255,255,255,.03),transparent), var(--card);
+      border:1px solid rgba(255,255,255,.08); border-radius:16px;
+      box-shadow:0 6px 24px rgba(0,0,0,.25);
+    }
+    .wheel__head{
+      display:flex; align-items:center; gap:12px; margin-bottom:10px;
+    }
+    .dot{width:10px; height:10px; border-radius:50%; background:var(--accent);}
+    .wheel__title{font-weight:700; letter-spacing:.2px}
+    .wheel__rail{
+      position:relative; overflow:hidden; border-radius:12px; border:1px solid rgba(255,255,255,.06)
+    }
+    .wheel__track{
+      display:flex; transition:transform .6s ease; will-change:transform;
+    }
+    .slide{
+      flex:0 0 100%; padding:18px; background:rgba(255,255,255,.02);
+      display:grid; gap:8px;
+    }
+    .slide a{
+      color:var(--text); text-decoration:none; font-size:1.05rem; font-weight:600;
+    }
+    .slide a:hover{ text-decoration:underline; }
+    .meta{color:var(--muted); font-size:.9rem;}
+    .controls{
+      display:flex; align-items:center; justify-content:space-between; gap:8px; padding:10px 0 2px;
+    }
+    .btn{
+      appearance:none; border:1px solid rgba(255,255,255,.15); background:transparent; color:var(--text);
+      padding:8px 12px; border-radius:10px; cursor:pointer; font-weight:600;
+    }
+    .btn:hover{border-color:var(--accent); box-shadow:0 0 0 3px rgba(248,223,152,.15)}
+    .status{color:var(--muted); font-size:.9rem}
+    @media (prefers-reduced-motion: reduce){
+      .wheel__track{transition:none}
+    }
+  </style>
+</head>
+<body>
+  <section class="wheel" aria-label="DR Nyhedshjul">
+    <div class="wheel__head">
+      <span class="dot" aria-hidden="true"></span>
+      <div class="wheel__title">Seneste fra DR</div>
+    </div>
+
+    <div class="wheel__rail" id="rail" tabindex="0" aria-live="polite">
+      <div class="wheel__track" id="track" role="list"></div>
+    </div>
+
+    <div class="controls">
+      <div>
+        <button class="btn" id="prev" aria-label="Forrige">⟵</button>
+        <button class="btn" id="next" aria-label="Næste">⟶</button>
+        <button class="btn" id="toggle" aria-pressed="true" aria-label="Pause">⏸︎ Pause</button>
+      </div>
+      <div class="status" id="status">Indlæser nyheder …</div>
+    </div>
+  </section>
+
+  <script>
+    const PROXY_URL = "https://YOUR-WORKER-URL.example/dr"; // ← paste your Worker URL
+
+    const rail  = document.getElementById("rail");
+    const track = document.getElementById("track");
+    const status= document.getElementById("status");
+    const btnPrev = document.getElementById("prev");
+    const btnNext = document.getElementById("next");
+    const btnToggle = document.getElementById("toggle");
+
+    let items = [];
+    let idx = 0, timer = null, playing = true, intervalMs = 5500;
+
+    const fmtRel = new Intl.RelativeTimeFormat("da-DK", { numeric: "auto" });
+    const fmtDate = new Intl.DateTimeFormat("da-DK", { dateStyle: "short", timeStyle: "short" });
+
+    function relTime(date){
+      const diff = (date - new Date())/1000; // seconds
+      const units = [
+        ["day", 86400], ["hour", 3600], ["minute", 60]
+      ];
+      for(const [unit, s] of units){
+        const v = Math.round(diff / s);
+        if (Math.abs(v) >= 1) return fmtRel.format(v, unit);
+      }
+      return "lige nu";
+    }
+
+    function slideTo(n){
+      if(!items.length) return;
+      idx = (n + items.length) % items.length;
+      track.style.transform = `translateX(-${idx * 100}%)`;
+      status.textContent = `Viser ${idx+1} af ${items.length}`;
+    }
+
+    function start(){ if(timer) return; timer = setInterval(()=>slideTo(idx+1), intervalMs); btnToggle.textContent="⏸︎ Pause"; btnToggle.setAttribute("aria-pressed","true"); }
+    function stop(){ clearInterval(timer); timer=null; btnToggle.textContent="▶︎ Afspil"; btnToggle.setAttribute("aria-pressed","false"); }
+
+    rail.addEventListener("mouseenter", stop);
+    rail.addEventListener("mouseleave", ()=>playing && start());
+    document.addEventListener("visibilitychange", ()=> document.hidden ? stop() : (playing && start()));
+    btnPrev.onclick = ()=>{ stop(); slideTo(idx-1); playing && start(); };
+    btnNext.onclick = ()=>{ stop(); slideTo(idx+1); playing && start(); };
+    btnToggle.onclick = ()=>{ playing = !playing; playing ? start() : stop(); };
+
+    async function load(){
+      try{
+        const r = await fetch(PROXY_URL, { cache: "no-store" });
+        if(!r.ok) throw new Error("Feed fejl");
+        const xmlText = await r.text();
+        const doc = new DOMParser().parseFromString(xmlText, "text/xml");
+        const nodes = [...doc.querySelectorAll("item")].slice(0, 12); // take first 12
+        items = nodes.map(n => ({
+          title: n.querySelector("title")?.textContent?.trim() ?? "Uden titel",
+          link:  n.querySelector("link")?.textContent?.trim() ?? "#",
+          date:  new Date(n.querySelector("pubDate")?.textContent ?? Date.now())
+        }));
+        // Build slides
+        track.innerHTML = items.map((it,i)=>`
+          <article class="slide" role="listitem" aria-label="Nyhed ${i+1}">
+            <a href="${it.link}" target="_blank" rel="noopener noreferrer">${it.title}</a>
+            <div class="meta">${fmtDate.format(it.date)} (${relTime(it.date)}) · Kilde: DR</div>
+          </article>
+        `).join("");
+        slideTo(0);
+        if(playing) start();
+      }catch(err){
+        console.error(err);
+        status.textContent = "Kunne ikke hente DR-nyheder.";
+        rail.innerHTML = `<div class="slide">Prøv at genindlæse siden.</div>`;
+      }
+    }
+    load();
+  </script>
+</body>
+</html>
