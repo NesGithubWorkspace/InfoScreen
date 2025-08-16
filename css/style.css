@@ -49,14 +49,19 @@
   header .clock { 
     color: var(--text); 
     font-weight: 700; 
-    font-size: clamp(14px, 2.4vw, 24px); 
+    font-size: clamp(28px, 4.8vw, 48px); 
     letter-spacing: .5px; 
   }
   header .date { 
     color: var(--text); 
     font-size: clamp(12px, 1.4vw, 16px); 
   }
-  header .brand { display: none; height: var(--logoH, clamp(28px, 5vw, 56px)); max-width: 50vw; object-fit: contain; }
+  header .brand { 
+    display: none; 
+    height: var(--logoH, clamp(28px, 5vw, 56px)); 
+    max-width: 50vw; 
+    object-fit: contain; 
+  }
   header.has-logo .brand { display: block; }
   header.has-logo .title-text { display: none; }
 
