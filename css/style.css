@@ -18,8 +18,7 @@
   }
 
   .page { 
-    height: 250dvh; 
-    width: 70dvw; 
+    height: 250dvh;  
     padding: 24px clamp(12px, 2vw, 32px); 
     display: grid; 
     grid-template-rows: auto 1fr; 
