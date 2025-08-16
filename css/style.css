@@ -49,7 +49,7 @@
   header .clock { 
     color: var(--text); 
     font-weight: 700; 
-    margin-top: -20px;
+    padding-top: -20px;
     font-size: clamp(28px, 4.8vw, 48px); 
     letter-spacing: .5px; 
   }
