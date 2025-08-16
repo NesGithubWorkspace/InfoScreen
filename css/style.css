@@ -17,7 +17,7 @@
     font: 16px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
   }
 
-  .page { height: 200dvh; width: 70dvw; padding: 24px clamp(12px, 2vw, 32px); display: grid; grid-template-rows: auto 1fr; gap: 16px; }
+  .page { height: 250dvh; width: 70dvw; padding: 24px clamp(12px, 2vw, 32px); display: grid; grid-template-rows: auto 1fr; gap: 16px; }
 
   header { 
     position: sticky; 
