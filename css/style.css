@@ -29,7 +29,7 @@
     position: sticky;
     top: 0px;
     z-index: 1000;  
-    background: #d45c4e; 
+    background: var(--muted); 
     padding-left: 12px;
     padding-right: 12px;
     padding-bottom: 8px; 
