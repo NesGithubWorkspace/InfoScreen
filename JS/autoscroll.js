@@ -1,6 +1,6 @@
 (function(){
     const PAUSE_MS = 2000;   // wait at bottom/top
-    const SCROLL_MS = 13000; // scrolling duration requested
+    const SCROLL_MS = 18000; // scrolling duration requested
 
     function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
 
