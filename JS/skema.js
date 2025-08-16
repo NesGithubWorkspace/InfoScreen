@@ -181,6 +181,20 @@ function getLookup(){ return JSON.parse(document.getElementById('lookup').textCo
     setInterval(render, 60*1000);
     window.addEventListener('keydown', (e) => { if (e.key && e.key.toLowerCase() === 'r') render(); });
     
+    function updateClock(){
+      try {
+        const lookup = getLookup();
+        const tz = lookup.settings?.timezone;
+        const opts = { hour: '2-digit', minute: '2-digit' };
+        if (tz) opts.timeZone = tz;
+        const txt = new Date().toLocaleTimeString('da-DK', opts);
+        const el = document.getElementById('clock');
+        if (el) el.textContent = txt;
+      } catch (_) {}
+    }
+    updateClock();
+    if (!window.__clockTimer) { window.__clockTimer = setInterval(updateClock, 1000); }
+
     function isFullscreen(){
       return !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
     }

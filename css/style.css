@@ -19,9 +19,43 @@
 
   .page { height: 200dvh; width: 70dvw; padding: 24px clamp(12px, 2vw, 32px); display: grid; grid-template-rows: auto 1fr; gap: 16px; }
 
-  header { position: sticky; top: 0; z-index: 1000; margin-top: -24px; background: #d45c4e; padding: 32px; padding-bottom: 24px; display: flex; align-items: baseline; gap: 16px; }
-  header h1 { margin: 0; font-size: clamp(18px, 2.6vw, 34px); letter-spacing: .4px; }
-  header .sub { margin-left: auto; text-align: right; color: var(--text); font-size: clamp(24px, 2.8vw, 56px); font-family: "Raleway", sans-serif; font-optical-sizing: auto; font-weight: 800; font-style: normal;}
+  header { 
+    position: sticky; 
+    top: 0; 
+    z-index: 1000; 
+    margin-top: -24px; 
+    background: #d45c4e; 
+    padding: 32px; 
+    padding-bottom: 24px; 
+    display: flex; 
+    align-items: center; 
+    gap: 16px; 
+  }
+  header h1 { 
+    margin: 0; 
+    font-size: clamp(18px, 2.6vw, 34px); 
+    letter-spacing: .4px; 
+  }
+  header .sub { 
+    margin-left: auto; 
+    text-align: right; 
+    color: var(--text); 
+    font-size: clamp(12px, 1.4vw, 28px); 
+    font-family: "Raleway", sans-serif; 
+    font-optical-sizing: auto; 
+    font-weight: 800; 
+    font-style: normal;
+  }
+  header .clock { 
+    color: var(--text); 
+    font-weight: 700; 
+    font-size: clamp(14px, 2.4vw, 24px); 
+    letter-spacing: .5px; 
+  }
+  header .date { 
+    color: var(--text); 
+    font-size: clamp(12px, 1.4vw, 16px); 
+  }
   header .brand { display: none; height: var(--logoH, clamp(28px, 5vw, 56px)); max-width: 50vw; object-fit: contain; }
   header.has-logo .brand { display: block; }
   header.has-logo .title-text { display: none; }
