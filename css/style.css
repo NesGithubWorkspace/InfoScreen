@@ -28,8 +28,7 @@
   header { 
     position: sticky; 
     top: 0;
-    z-index: 1000; 
-    margin-top: -34px; 
+    z-index: 1000;  
     background: #d45c4e; 
     padding-left: 12px;
     padding-right: 12px;
@@ -63,8 +62,8 @@
     font-size: clamp(12px, 1.4vw, 16px); 
   }
   header .brand { 
-    display: none; 
-    margin-top: 12px;
+    display: none;
+    margin-top: auto;
     margin-bottom: auto;
     height: var(--logoH, clamp(28px, 5vw, 56px)); 
     max-width: 50vw; 
