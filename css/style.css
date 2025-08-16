@@ -45,7 +45,7 @@
   .now { position: absolute; left: 0; right: 0; height: 2px; background: var(--now); box-shadow: 0 0 12px rgba(255,204,0,.7); }
   .now .dot { position: absolute; left: calc(8px + var(--labelWidth)); top: -4px; width: 10px; height: 10px; border-radius: 50%; background: var(--now); box-shadow: 0 0 10px rgba(255,204,0,.9); }
 
-  .legend { position: absolute; right: 10px; bottom: 10px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .legend { position: fixed; right: 10px; bottom: 10px; display: flex; gap: 10px; flex-wrap: wrap; }
   .legend .key { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12px; background: rgba(255,255,255,.03); padding: 6px 8px; border-radius: 999px; border: 1px solid rgba(255,255,255,.06); }
   .legend .swatch { width: 10px; height: 10px; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.25); }
 
