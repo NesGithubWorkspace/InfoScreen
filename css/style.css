@@ -64,6 +64,8 @@
   }
   header .brand { 
     display: none; 
+    margin-top: auto;
+    margin-bottom: auto;
     height: var(--logoH, clamp(28px, 5vw, 56px)); 
     max-width: 50vw; 
     object-fit: contain; 
